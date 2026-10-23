@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fbf7f1">
+<title>小笺 · 格式转换工具箱</title>
+<style>
+:root{--bg:#fbf7f1;--paper:#fffdf9;--ink:#51483f;--muted:#938779;--line:#eadfd2;--rose:#d98f83;--rose-dark:#b96e63;--sage:#9caf9c;--sage-dark:#617b68;--yellow:#f4e5b9;--shadow:0 12px 35px rgba(104,82,62,.08)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0%,#f8e9e1 0,transparent 28rem),radial-gradient(circle at 100% 25%,#eaf0e5 0,transparent 26rem),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB",sans-serif;line-height:1.55}
+.wrap{max-width:1040px;margin:auto;padding:28px 18px 56px}.hero{display:flex;gap:14px;align-items:center;margin:10px 0 24px}.logo{width:58px;height:58px;display:grid;place-items:center;background:#f3ded6;border:1px solid #e8c8bc;border-radius:18px;font-size:28px;transform:rotate(-4deg);box-shadow:var(--shadow)}h1{font-size:clamp(25px,5vw,34px);letter-spacing:.02em;margin:0;font-weight:750}.sub{margin:4px 0 0;color:var(--muted);font-size:14px}.badge{display:inline-block;margin-left:8px;vertical-align:middle;font-size:11px;font-weight:600;color:var(--sage-dark);background:#eaf0e6;border-radius:999px;padding:4px 8px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}.card{background:rgba(255,253,249,.92);border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:var(--shadow);min-width:0}.card h2{font-size:16px;margin:0 0 14px;display:flex;align-items:center;gap:8px}.num{display:inline-grid;place-items:center;width:26px;height:26px;background:#f6e6df;border-radius:9px;color:var(--rose-dark);font-size:12px}
+label{display:block;font-size:13px;color:#786c60;margin:12px 0 6px;font-weight:650}select,input[type=text]{width:100%;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:11px 12px;color:var(--ink);font:inherit;outline:none}select:focus,input:focus,textarea:focus{border-color:#d7a49a;box-shadow:0 0 0 3px #f7e8e3}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.drop{border:1.5px dashed #d9c6b7;background:#fdf8f2;border-radius:15px;padding:17px;text-align:center;margin-top:12px;cursor:pointer;transition:.15s}.drop.drag{background:#f8e9e3;border-color:var(--rose)}.drop strong{display:block;font-size:14px}.drop span{display:block;font-size:12px;color:var(--muted);margin-top:3px}.drop input{display:none}
+textarea{width:100%;min-height:260px;resize:vertical;border:1px solid var(--line);border-radius:14px;background:#fffefa;padding:13px;color:#51483f;font:13px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;outline:none}
+.hint{font-size:12px;color:var(--muted);margin:8px 0 0}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.btn{border:0;border-radius:12px;padding:11px 15px;font:inherit;font-weight:700;cursor:pointer;transition:transform .12s,opacity .12s}.btn:active{transform:scale(.98)}.primary{background:var(--rose);color:white}.secondary{background:#edf1e8;color:#526c59}.plain{background:#f5eee5;color:#756658}.btn:disabled{opacity:.45;cursor:not-allowed}
+.status{margin-top:12px;padding:10px 12px;border-radius:12px;background:#f4f0e8;color:#7a6b5c;font-size:12px;min-height:39px}.status.ok{background:#edf3e9;color:#54735c}.status.err{background:#f9e9e5;color:#a25349}
+.output-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.filename{font-size:12px;color:var(--muted);overflow-wrap:anywhere}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}.feature{padding:12px;background:rgba(255,253,249,.72);border:1px solid var(--line);border-radius:15px;font-size:12px;color:var(--muted)}.feature b{display:block;font-size:13px;color:var(--ink);margin-bottom:3px}.foot{margin:18px 4px 0;color:var(--muted);font-size:12px;line-height:1.7}.small-link{color:var(--rose-dark);text-decoration:underline;cursor:pointer}
+@media(max-width:720px){.wrap{padding:20px 12px 36px}.layout{grid-template-columns:1fr}.card{padding:16px}.hero{margin-top:4px}.feature-grid{grid-template-columns:1fr 1fr}.hero .badge{display:table;margin:7px 0 0}.row{gap:8px}textarea{min-height:220px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="logo">✂️</div>
+    <div><h1>小笺 <span class="badge">格式转换工具箱</span></h1><p class="sub">把文件整理得清清爽爽，省下和格式较劲的时间。</p></div>
+  </header>
+
+  <main class="layout">
+    <section class="card">
+      <h2><span class="num">01</span> 放入文件</h2>
+      <div class="row">
+        <div><label for="sourceFormat">原始格式</label><select id="sourceFormat"><option value="auto">自动识别</option><option value="txt">TXT · 纯文本</option><option value="json">JSON · 结构化数据</option><option value="md">MD · Markdown</option><option value="csv">CSV · 表格</option></select></div>
+        <div><label for="targetFormat">转换为</label><select id="targetFormat"><option value="json">JSON</option><option value="txt">TXT</option><option value="md">MD</option><option value="csv">CSV</option></select></div>
+      </div>
+      <label>文件内容</label>
+      <div class="drop" id="dropZone" role="button" tabindex="0"><strong>点这里选择文件，或把文件拖进来</strong><span>支持 .txt、.json、.md、.csv · 文件只在本机浏览器处理</span><input type="file" id="fileInput" accept=".txt,.json,.md,.markdown,.csv,.log,text/plain,application/json,text/markdown,text/csv"></div>
+      <p class="hint" id="fileName">也可以直接在下面粘贴文本。</p>
+      <label for="inputText">输入内容</label>
+      <textarea id="inputText" spellcheck="false" placeholder="把内容粘贴到这里，或先选择一个文件……"></textarea>
+      <div class="actions">
+        <button class="btn primary" id="convertBtn">开始转换 ↗</button>
+        <button class="btn plain" id="exampleBtn">填入示例</button>
+        <button class="btn plain" id="clearBtn">清空</button>
+      </div>
+      <div class="status" id="status" aria-live="polite">准备好了。选择格式、放入内容，然后开始转换。</div>
+    </section>
+
+    <section class="card">
+      <div class="output-head"><h2><span class="num">02</span> 转换结果</h2><span class="filename" id="outputMeta">尚未生成</span></div>
+      <label for="outputText">结果预览（可以直接编辑）</label>
+      <textarea id="outputText" spellcheck="false" placeholder="转换结果会出现在这里……"></textarea>
+      <label for="outputName">导出文件名</label>
+      <input type="text" id="outputName" value="converted" maxlength="120">
+      <div class="actions">
+        <button class="btn primary" id="downloadBtn" disabled>下载文件 ↓</button>
+        <button class="btn secondary" id="copyBtn" disabled>复制结果</button>
+      </div>
+      <p class="hint">下载时会自动添加目标格式后缀。导出前可以先在预览框里修改内容。</p>
+    </section>
+  </main>
+
+  <section class="feature-grid">
+    <div class="feature"><b>☁️ 不上传文件</b>所有转换都在当前浏览器里完成。</div>
+    <div class="feature"><b>🧷 尽量保留内容</b>支持换行、引号、逗号等常见特殊字符。</div>
+    <div class="feature"><b>📚 聊天记录友好</b>JSON 会美化排版；JSON 数组可整理成 Markdown。</div>
+  </section>
+  <p class="foot">小提醒：不同格式表达信息的方式不一样。比如普通段落转成 CSV 时没有天然的表格字段，程序会按规则整理；复杂聊天记录的专用结构也建议先预览检查。重要文件请保留原件。</p>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+const input = $('inputText'), output = $('outputText'), sourceSel = $('sourceFormat'), targetSel = $('targetFormat');
+let originalFileName = 'converted';
+function setStatus(msg,type=''){const el=$('status');el.textContent=msg;el.className='status '+type}
+function extFormat(name){const ext=(name.split('.').pop()||'').toLowerCase();if(ext==='markdown')return'md';return ['txt','json','md','csv'].includes(ext)?ext:null}
+function detectFormat(text, filename=''){
+  const ext=extFormat(filename);if(ext)return ext;
+  const t=text.trim();if(!t)return'txt';
+  if((t.startsWith('{')&&t.endsWith('}'))||(t.startsWith('[')&&t.endsWith(']'))){try{JSON.parse(t);return'json'}catch(e){}}
+  if(/^(\s*#{1,6}\s+|```|>\s|[-*+]\s|\|.+\|)/m.test(t))return'md';
+  const lines=t.split(/\r?\n/);if(lines.length>1&&lines[0].includes(',')&&lines.every(l=>l.includes(',')))return'csv';
+  return'txt';
+}
+function parseCSV(text){
+  const rows=[];let row=[],field='',quoted=false;
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(quoted){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')quoted=false;else field+=c}
+    else if(c==='"'&&field==='')quoted=true;
+    else if(c===','){row.push(field);field=''}
+    else if(c==='\n'){row.push(field);rows.push(row);row=[];field=''}
+    else if(c==='\r'){if(text[i+1]==='\n')i++;row.push(field);rows.push(row);row=[];field=''}
+    else field+=c;
+  }
+  if(field!==''||row.length){row.push(field);rows.push(row)}
+  return rows.filter(r=>!(r.length===1&&r[0]===''));
+}
+function csvEscape(v){let s=typeof v==='string'?v:JSON.stringify(v??'');if(s==null)s='';return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
+function toCSV(data){
+  let rows;
+  if(Array.isArray(data)){
+    if(!data.length)return '';
+    if(data.every(x=>x&&typeof x==='object'&&!Array.isArray(x))){const keys=[...new Set(data.flatMap(x=>Object.keys(x)))];rows=[keys,...data.map(x=>keys.map(k=>x[k]??''))]}
+    else rows=[['value'],...data.map(x=>[x])];
+  }else if(data&&typeof data==='object'){const entries=Object.entries(data);rows=[['key','value'],...entries]}
+  else rows=[['value'],[data??'']];
+  return rows.map(r=>r.map(csvEscape).join(',')).join('\r\n');
+}
+function csvToData(text){
+  const rows=parseCSV(text);if(!rows.length)return [];
+  const [head,...body]=rows;
+  if(head.length>1&&body.length&&head.every(h=>h.trim()!=='')){
+    return body.map(r=>Object.fromEntries(head.map((h,i)=>[h,parseCell(r[i]??'')])));
+  }
+  return rows.map(r=>r.length===1?parseCell(r[0]):r.map(parseCell));
+}
+function parseCell(s){const t=String(s??'').trim();if(t==='')return '';if(t==='true')return true;if(t==='false')return false;if(t==='null')return null;if(/^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(t))return Number(t);return s}
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function scalar(v){if(v===null)return'null';if(typeof v==='object')return JSON.stringify(v);return String(v)}
+function jsonToMD(data){
+  if(Array.isArray(data)&&data.length&&data.every(x=>x&&typeof x==='object'&&!Array.isArray(x))){
+    const keys=[...new Set(data.flatMap(x=>Object.keys(x)))];
+    const cell=v=>scalar(v).replace(/\|/g,'\\|').replace(/\r?\n/g,'<br>');
+    return '| '+keys.map(cell).join(' | ')+' |\n| '+keys.map(()=> '---').join(' | ')+' |\n'+data.map(o=>'| '+keys.map(k=>cell(o[k]??'')).join(' | ')+' |').join('\n');
+  }
+  if(data&&typeof data==='object'&&!Array.isArray(data)){
+    return Object.entries(data).map(([k,v])=>typeof v==='object'&&v!==null?`## ${k}\n\n\`\`\`json\n${JSON.stringify(v,null,2)}\n\`\`\``:`- **${k}**：${scalar(v)}`).join('\n\n');
+  }
+  if(Array.isArray(data))return data.map((v,i)=>`${i+1}. ${scalar(v)}`).join('\n');
+  return String(data??'');
+}
+function mdToData(text){
+  const lines=text.split(/\r?\n/), sections=[], paragraphs=[];let current=null,buf=[];
+  const flush=()=>{if(buf.length){paragraphs.push(buf.join('\n').trim());buf=[]}};
+  for(const line of lines){
+    const h=line.match(/^(#{1,6})\s+(.+)$/);
+    if(h){flush();current={heading:h[2].trim(),content:[]};sections.push(current)}
+    else if(line.trim()===''){flush()}
+    else if(current) {current.content.push(line)}
+    else buf.push(line);
+  }flush();
+  if(sections.length)return {title:sections[0].heading,sections:sections.map(s=>({heading:s.heading,content:s.content.join('\n').trim()})),paragraphs};
+  const table=parseMarkdownTable(text);if(table)return table;
+  const items=lines.filter(l=>/^\s*(?:[-*+]\s+|\d+[.)]\s+)/.test(l)).map(l=>l.replace(/^\s*(?:[-*+]\s+|\d+[.)]\s+)/,'').trim());
+  if(items.length===lines.filter(l=>l.trim()).length&&items.length)return {items};
+  return {paragraphs: text.split(/\n\s*\n/).map(s=>s.trim()).filter(Boolean)};
+}
+function parseMarkdownTable(text){
+  const lines=text.split(/\r?\n/).filter(l=>l.trim().startsWith('|'));
+  if(lines.length<2||!/^(\|\s*:?-{3,}:?\s*)+\|?$/.test(lines[1].trim()))return null;
+  const split=l=>l.trim().replace(/^\|/,'').replace(/\|$/,'').split(/(?<!\\)\|/).map(x=>x.trim().replace(/\\\|/g,'|'));
+  const headers=split(lines[0]);return lines.slice(2).map(l=>{const vals=split(l);return Object.fromEntries(headers.map((h,i)=>[h,vals[i]??'']))});
+}
+function dataToText(data){return typeof data==='string'?data:JSON.stringify(data,null,2)}
+function dataToMD(data){return jsonToMD(data)}
+function dataToTXT(data){if(typeof data==='string')return data;if(Array.isArray(data))return data.map((x,i)=>`${i+1}. ${typeof x==='object'?JSON.stringify(x):x}`).join('\n');if(data&&typeof data==='object')return Object.entries(data).map(([k,v])=>`${k}: ${typeof v==='object'?JSON.stringify(v):v}`).join('\n');return String(data??'')}
+function dataToCSV(data){return toCSV(data)}
+function convert(text,from,to){
+  let data;
+  if(from==='auto')from=detectFormat(text,originalFileName);
+  if(from==='json'){try{data=JSON.parse(text)}catch(e){throw new Error('原始格式选择了 JSON，但内容不是有效的 JSON：'+e.message)}}
+  else if(from==='csv')data=csvToData(text);
+  else if(from==='md')data=mdToData(text);
+  else {
+    const trimmed=text.trim();
+    if(to==='json'&&trimmed){try{data=JSON.parse(trimmed)}catch(e){data={text:text}}}
+    else data=text;
+  }
+  if(from==='txt'&&to==='txt')return text;
+  if(to==='json')return JSON.stringify(data,null,2);
+  if(to==='csv')return dataToCSV(data);
+  if(to==='md')return dataToMD(data);
+  if(to==='txt')return dataToTXT(data);
+  return String(data);
+}
+function updateMeta(){const f=targetSel.value;const len=output.value.length;$('outputMeta').textContent=output.value?`${len.toLocaleString()} 字符 · ${f.toUpperCase()}`:'尚未生成'}
+function doConvert(){
+  const text=input.value;if(!text.trim()){setStatus('先放入一点内容再转换嘛。','err');return}
+  try{
+    const from=sourceSel.value==='auto'?detectFormat(text,originalFileName):sourceSel.value;
+    const result=convert(text,sourceSel.value,targetSel.value);
+    output.value=result;$('outputName').value=(originalFileName.replace(/\.[^.]+$/,'')||'converted')+'_converted';
+    $('downloadBtn').disabled=false;$('copyBtn').disabled=false;updateMeta();
+    setStatus(`转换完成：${from.toUpperCase()} → ${targetSel.value.toUpperCase()}。建议检查一下预览，尤其是复杂表格或聊天记录。`,'ok');
+  }catch(e){setStatus(e.message||'转换失败，请检查输入内容。','err')}
+}
+$('convertBtn').addEventListener('click',doConvert);
+$('dropZone').addEventListener('click',()=>$('fileInput').click());
+$('dropZone').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')$('fileInput').click()});
+$('fileInput').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;await loadFile(f)});
+async function loadFile(f){
+  try{input.value=await f.text();originalFileName=f.name;$('fileName').textContent=`已载入：${f.name}（${(f.size/1024).toFixed(f.size<1024*1024?1:0)} ${f.size<1024*1024?'KB':'MB'}）`;const fmt=extFormat(f.name);if(fmt)sourceSel.value=fmt;setStatus('文件已载入，可以开始转换。','ok');}
+  catch(e){setStatus('读取文件失败：'+e.message,'err')}
+}
+const dz=$('dropZone');['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag')}));['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag')}));dz.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)loadFile(f)});
+$('downloadBtn').addEventListener('click',()=>{const ext=targetSel.value;let name=$('outputName').value.trim()||'converted';name=name.replace(/[\\/:*?"<>|]/g,'_').replace(/\.(txt|json|md|csv)$/i,'');const blob=new Blob([output.value],{type:ext==='json'?'application/json;charset=utf-8':ext==='csv'?'text/csv;charset=utf-8':'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name+'.'+ext;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
+$('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(output.value);setStatus('已复制到剪贴板。','ok')}catch(e){output.select();document.execCommand('copy');setStatus('已尝试复制结果。','ok')}});
+$('clearBtn').addEventListener('click',()=>{input.value='';output.value='';$('fileName').textContent='也可以直接在下面粘贴文本。';$('outputMeta').textContent='尚未生成';$('downloadBtn').disabled=true;$('copyBtn').disabled=true;$('fileInput').value='';originalFileName='converted';setStatus('已清空，随时可以重新开始。')});
+$('exampleBtn').addEventListener('click',()=>{sourceSel.value='json';targetSel.value='md';originalFileName='example.json';input.value=JSON.stringify([{role:'user',content:'宝宝，今天也要好好吃饭。',timestamp:'2026-10-23 12:30'},{role:'assistant',content:'知道啦。',timestamp:'2026-10-23 12:31'}],null,2);setStatus('示例已填入，点击「开始转换」试试看。')});
+output.addEventListener('input',updateMeta);
+</script>
+</body>
+</html>
